@@ -399,3 +399,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/Backend/FootballHub.Api/appsettings.Development.local.json
