@@ -1,3 +1,4 @@
+using FootballHub.Infrastructure.Persistence;
 using Serilog;
 
 var APP_NAME = "FootballHub.Api";
@@ -19,6 +20,7 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
     .Enrich.FromLogContext());
 
 // Add services to the container.
+builder.Services.AddSqlDatabase(builder.Configuration.GetConnectionString("MainDbSql")!);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
