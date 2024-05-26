@@ -1,3 +1,4 @@
+using FootballHub.Api.Middlewares;
 using FootballHub.Application.Logic.Abstractions;
 using FootballHub.Infrastructure.Persistence;
 using Serilog;
@@ -38,6 +39,8 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.UseExceptionResultMiddleware();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -46,4 +49,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
 app.Run();
