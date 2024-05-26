@@ -1,3 +1,4 @@
+using FootballHub.Application.Logic.Abstractions;
 using FootballHub.Infrastructure.Persistence;
 using Serilog;
 
@@ -27,6 +28,10 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
 // Add services to the container.
 builder.Services.AddSqlDatabase(builder.Configuration.GetConnectionString("MainDbSql")!);
 builder.Services.AddControllers();
+builder.Services.AddMediatR(c =>
+{
+    c.RegisterServicesFromAssemblyContaining(typeof(BaseCommandHandler));
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
