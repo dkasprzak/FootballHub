@@ -1,4 +1,5 @@
-﻿using FootballHub.Infrastructure.Persistence;
+﻿using FootballHub.Infrastructure.Auth;
+using FootballHub.Infrastructure.Persistence;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +11,8 @@ public static class DefaultDIConfiguration
     {
         services.AddDatabaseCache();
         services.AddSqlDatabase(configuration.GetConnectionString("MainDbSql")!);
+        services.AddJwtAuth(configuration);
+        
         return services;
     }
 }

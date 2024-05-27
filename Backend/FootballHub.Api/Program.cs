@@ -2,7 +2,6 @@ using FootballHub.Api.Middlewares;
 using FootballHub.Application;
 using FootballHub.Application.Logic.Abstractions;
 using FootballHub.Infrastructure;
-using FootballHub.Infrastructure.Persistence;
 using Serilog;
 
 var APP_NAME = "FootballHub.Api";
