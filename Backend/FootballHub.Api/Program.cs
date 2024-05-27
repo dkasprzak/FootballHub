@@ -1,3 +1,4 @@
+using FootballHub.Api.Auth;
 using FootballHub.Api.Middlewares;
 using FootballHub.Application;
 using FootballHub.Application.Logic.Abstractions;
@@ -28,9 +29,11 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
     .Enrich.FromLogContext());
 
 // Add services to the container.
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
+builder.Services.AddJwtAuthenticationDataProvider(builder.Configuration);
 
 builder.Services.AddMediatR(c =>
 {
