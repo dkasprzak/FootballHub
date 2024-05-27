@@ -1,6 +1,7 @@
 using FootballHub.Api.Middlewares;
 using FootballHub.Application;
 using FootballHub.Application.Logic.Abstractions;
+using FootballHub.Infrastructure;
 using FootballHub.Infrastructure.Persistence;
 using Serilog;
 
@@ -28,9 +29,8 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
     .Enrich.FromLogContext());
 
 // Add services to the container.
-builder.Services.AddSqlDatabase(builder.Configuration.GetConnectionString("MainDbSql")!);
 builder.Services.AddControllers();
-
+builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 
 builder.Services.AddMediatR(c =>

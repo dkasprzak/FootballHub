@@ -1,4 +1,5 @@
-﻿using FootballHub.Application.Exceptions;
+﻿using EFCoreSecondLevelCacheInterceptor;
+using FootballHub.Application.Exceptions;
 using FootballHub.Application.Interfaces;
 using FootballHub.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,7 @@ public class CurrentAccountProvider : ICurrentAccountProvider
                 .Where(au => au.UserId == userId.Value)
                 .OrderBy(au => au.Id)
                 .Select(au => (int?)au.AccountId)
+                .Cacheable()
                 .FirstOrDefaultAsync();
         }
         return null;
@@ -37,7 +39,7 @@ public class CurrentAccountProvider : ICurrentAccountProvider
         {
             throw new UnauthorizedException();
         }
-        var account = await _dbContext.Accounts.FirstOrDefaultAsync(a => a.Id == accountId.Value);
+        var account = await _dbContext.Accounts.Cacheable().FirstOrDefaultAsync(a => a.Id == accountId.Value);
         if (account == null)
         {
             throw new ErrorException("AccountDoesNotExists");
