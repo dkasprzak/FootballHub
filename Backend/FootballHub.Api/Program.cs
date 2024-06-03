@@ -41,7 +41,16 @@ builder.Services.AddMediatR(c =>
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(o => 
+    o.CustomSchemaIds(x =>
+    {
+        var name = x.FullName;
+        if (name != null)
+        {
+            name = name.Replace("+", "_"); //swagger bug fix
+        }
+        return name;
+    }));
 
 var app = builder.Build();
 

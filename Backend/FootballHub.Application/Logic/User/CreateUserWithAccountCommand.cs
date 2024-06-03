@@ -40,7 +40,7 @@ public static class CreateUserWithAccountCommand
             var utcNow = DateTime.UtcNow;
             var user = new Domain.Entities.User
             {
-                RegistrationDate = utcNow,
+                RegisterDate = utcNow,
                 Email = request.Email,
                 HashedPassword = ""
             };
