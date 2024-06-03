@@ -33,14 +33,14 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
+builder.Services.AddValidators();
 builder.Services.AddJwtAuthenticationDataProvider(builder.Configuration);
 
 builder.Services.AddMediatR(c =>
 {
     c.RegisterServicesFromAssemblyContaining(typeof(BaseCommandHandler));
 });
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen(o => 
     o.CustomSchemaIds(x =>
     {

@@ -25,11 +25,16 @@ public class ExceptionResultMiddleware
             httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             await httpContext.Response.WriteAsJsonAsync(new ErrorResponse { Error = e.Error });
         }
-        catch (UnauthorizedException e)
+        catch (UnauthorizedException ue)
         {
             httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
             await httpContext.Response.WriteAsJsonAsync(new UnauthorizedResponse
-                { Reason = e.Message ?? "Unauthorized" });
+                { Reason = ue.Message ?? "Unauthorized" });
+        }
+        catch (ValidationException ve)
+        {
+            httpContext.Response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
+            await httpContext.Response.WriteAsJsonAsync(new ValidationResponse(ve));
         }
         catch (Exception e)
         {
