@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using FootballHub.Api.Auth;
 using FootballHub.Api.Middlewares;
 using FootballHub.Application;
@@ -37,7 +38,8 @@ builder.Services.AddControllersWithViews(options =>
     {
         options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
     }
-});
+}).AddJsonOptions(options => 
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 builder.Services.AddValidators();
