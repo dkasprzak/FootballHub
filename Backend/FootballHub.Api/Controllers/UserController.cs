@@ -39,6 +39,14 @@ public class UserController : BaseController
         SetTokenCookie(token);
         return Ok(new JwtToken {AccessToken = token});
     }
+    
+    [HttpPost]
+    public async Task<ActionResult> Logout([FromBody] LogoutCommand.Request model)
+    {
+        var logoutResult = await _mediator.Send(model);
+        DeleteTokenCookie();        
+        return Ok(logoutResult);
+    }
 
     private void SetTokenCookie(string token)
     {
@@ -61,5 +69,10 @@ public class UserController : BaseController
             };
         }
         Response.Cookies.Append(CookieSettings.CookieName, token, cookieOption);
+    }
+
+    private void DeleteTokenCookie()
+    {
+        Response.Cookies.Delete(CookieSettings.CookieName, new CookieOptions{HttpOnly = true});
     }
 }
