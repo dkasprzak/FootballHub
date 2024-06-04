@@ -3,6 +3,7 @@ using FootballHub.Api.Auth;
 using FootballHub.Application.Logic.User;
 using FootballHub.Infrastructure.Auth;
 using MediatR;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -15,14 +16,20 @@ public class UserController : BaseController
 {
     private readonly CookieSettings _cookieSettings;
     private readonly JwtManager _jwtManager;
+    private readonly IAntiforgery _antiforgery;
 
-    public UserController(ILogger<UserController> logger, IOptions<CookieSettings> cookieSettings, JwtManager jwtManager, IMediator mediator) : base(logger, mediator)
+    public UserController(ILogger<UserController> logger, IOptions<CookieSettings> cookieSettings, 
+        JwtManager jwtManager,
+        IAntiforgery antiforgery,
+        IMediator mediator) : base(logger, mediator)
     {
         _cookieSettings = cookieSettings != null ? cookieSettings.Value : null;
         _jwtManager = jwtManager;
+        _antiforgery = antiforgery;
     }
 
     [HttpPost]
+    [IgnoreAntiforgeryToken]
     public async Task<ActionResult> CreateUserWithAccount([FromBody] CreateUserWithAccountCommand.Request model)
     {
         var createAccountResult = await _mediator.Send(model);
@@ -53,6 +60,13 @@ public class UserController : BaseController
     {
         var data = await _mediator.Send(new LoggedInUserQuery.Request());
         return Ok(data);
+    }
+    
+    [HttpGet]
+    public async Task<ActionResult> AntiforgeryToken()
+    {
+        var tokens = _antiforgery.GetAndStoreTokens(HttpContext);
+        return Ok(tokens.RequestToken);
     }
 
     private void SetTokenCookie(string token)

@@ -3,6 +3,7 @@ using FootballHub.Api.Middlewares;
 using FootballHub.Application;
 using FootballHub.Application.Logic.Abstractions;
 using FootballHub.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
 var APP_NAME = "FootballHub.Api";
@@ -30,7 +31,13 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
 
 // Add services to the container.
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddControllers();
+builder.Services.AddControllersWithViews(options =>
+{
+    if (!builder.Environment.IsDevelopment())
+    {
+        options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+    }
+});
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 builder.Services.AddValidators();
@@ -51,6 +58,11 @@ builder.Services.AddSwaggerGen(o =>
         }
         return name;
     }));
+
+builder.Services.AddAntiforgery(o =>
+{
+    o.HeaderName = "X-XSRF-TOKEN";
+});
 
 builder.Services.AddCors();
 
