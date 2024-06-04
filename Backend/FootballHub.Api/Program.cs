@@ -40,6 +40,7 @@ builder.Services.AddControllersWithViews(options =>
     }
 }).AddJsonOptions(options => 
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 builder.Services.AddValidators();
