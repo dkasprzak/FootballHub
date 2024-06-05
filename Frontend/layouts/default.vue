@@ -30,9 +30,9 @@
 
   const theme = useTheme();
   const { mobile } = useDisplay();
-
   const drawer = ref(null);
   const currentTheme = useStorage('currentTheme', 'light');
+  const userStore = useUserStore();
 
   const menuItems = [
     {
@@ -56,6 +56,7 @@ function toggleTheme () {
 //Przypisanie koloru z local storage
 onMounted(() => {
   theme.global.name.value = currentTheme.value;
+  userStore.loadLogedInUser();
 });
 
 </script>
