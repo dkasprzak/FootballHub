@@ -7,7 +7,9 @@
     </v-app-bar>
 
     <v-navigation-drawer :order="mobile ? -1 : 0" v-model="drawer">
-      <!--  -->
+      <VList>
+        <VListItem v-for="item in menuItems" :key="item.name" :title="item.name" :prepend-icon="item.icon" :to="item.url"></VListItem>
+      </VList>
     </v-navigation-drawer>
 
     <v-main>
@@ -23,5 +25,18 @@
 
   const { mobile } = useDisplay();
 
-  const drawer = ref(false)
+  const drawer = ref(null)
+
+  const menuItems = [
+    {
+      name: 'Strona główna',
+      icon: 'mdi-home',
+      url: '/'
+    },
+    {
+      name: 'Kluby',
+      icon: 'mdi-soccer',
+      url: '/football-clubs'
+    }
+  ];
 </script>
