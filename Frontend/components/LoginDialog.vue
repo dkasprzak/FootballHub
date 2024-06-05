@@ -1,8 +1,11 @@
 <template>
-    <VDialog v-model="show" persistent width="400" scroll-strategy="none">
+    <VDialog :model-value="show" persistent width="400" scroll-strategy="none">
         <VCard class="py-4">
             <VCardTitle class="text-center">Logowanie</VCardTitle>
-            <VForm @submit.prevent="submit">
+            <div v-if="userStore.$state.loading === true" class="pa-4 d-flex justify center">
+                <VProgressCircular indeterminate></VProgressCircular>
+            </div>
+            <VForm v-else @submit.prevent="submit">
                 <VCardText>
                     <v-text-field class="mb-4" variant="outlined" v-model="viewModel.email" label="Email"></v-text-field>
                     <v-text-field class="mb-4" variant="outlined" v-model="viewModel.password" type="password" label="Hasło"></v-text-field>
@@ -20,15 +23,19 @@
 </style>
 
 <script setup>
-const show = ref(true);
+    const userStore = useUserStore();
 
-const viewModel = ref({
-   email: '',
-   password: ''
-});
+    const show = computed(() => {
+        return userStore.$state.isLoggedIn === false || userStore.$state.loading === true;
+    });
 
-const submit = () => {
-    console.log(viewModel.value);
-}
+    const viewModel = ref({
+    email: '',
+    password: ''
+    });
+
+    const submit = () => {
+        console.log(viewModel.value);
+    }
 
 </script>
