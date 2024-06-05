@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire">
-    <v-app-bar>
+    <v-app-bar color="brand">
       <v-app-bar-nav-icon v-if="mobile" @click="drawer = !drawer"></v-app-bar-nav-icon>
 
       <v-app-bar-title>FootballHub</v-app-bar-title>
