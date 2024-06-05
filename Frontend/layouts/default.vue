@@ -19,6 +19,7 @@
         <NuxtPage />
       </div>
     </v-main>
+    <LoginDialog></LoginDialog>
   </v-app>
 </template>
 
@@ -53,9 +54,8 @@ function toggleTheme () {
   currentTheme.value = newTheme;
 }
 
-//Przypisanie koloru z local storage
 onMounted(() => {
-  theme.global.name.value = currentTheme.value;
+  theme.global.name.value = currentTheme.value; //Przypisanie koloru z local storage
   userStore.loadLogedInUser();
 });
 
