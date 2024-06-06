@@ -31,14 +31,15 @@ export const useUserStore = defineStore({
 
         logout(){
             useWebApiFetch('/User/Logout', {
-                method: 'POST'
+                method: 'POST',
+                body: JSON.stringify({}),
             })
                 .then((response) => {
                     if(response.data.value){
                         this.isLoggedIn = false;
                         this.userData = null;
                     }
-                })
+                });
         },
     }
 })

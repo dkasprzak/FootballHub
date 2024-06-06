@@ -25,6 +25,15 @@
       <VList>
         <VListItem v-for="item in menuItems" :key="item.name" :title="item.name" :prepend-icon="item.icon" :to="item.url"></VListItem>
       </VList>
+
+      <template v-slot:append>
+        <div class="pa-2">
+          <v-btn block variant="text" @click="logout" prepend-icon="mdi-logout">
+            Wyloguj się
+          </v-btn>
+        </div>
+      </template>
+
     </v-navigation-drawer>
 
     <v-main>
@@ -66,6 +75,10 @@ function toggleTheme () {
   let newTheme =  theme.global.current.value.dark ? 'light' : 'dark';
   theme.global.name.value = newTheme;
   currentTheme.value = newTheme;
+}
+
+const logout = () => {
+  userStore.logout();
 }
 
 onMounted(() => {
