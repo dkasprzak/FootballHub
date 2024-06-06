@@ -11,12 +11,14 @@ export const useUserStore = defineStore({
     },
     actions: {
         loadLogedInUser(){
+            const accountStore = useAccountStore();
             this.loading = true;
             useWebApiFetch('/User/GetLoggedInUser')
                 .then(({ data, error }) => {
                     if(data.value){
                         this.isLoggedIn = true;
                         this.userData = data.value;
+                        accountStore.loadCurrentAccount();
                     } else if(error.value){
                         this.isLoggedIn = false;
                         this.userData = null;
