@@ -30,7 +30,7 @@
 
 
   const theme = useTheme();
-  const { mobile } = useDisplay();
+  const { mobile } = useDisplay(); //const mobie=useDisplay().mobile
   const drawer = ref(null);
   const currentTheme = useStorage('currentTheme', 'light');
   const userStore = useUserStore();
