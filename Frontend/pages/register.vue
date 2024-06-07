@@ -29,6 +29,7 @@ import { errorMessages } from 'vue/compiler-sfc';
     const { getErrorMessage } = useWebApiResponseParser();
     const { ruleRequired, ruleEmail } = useFormValidationRules();
     const router = useRouter(); // przejście na inną stronę
+    const globalMessageStore = useGlobalMessageStore();
 
     definePageMeta({
         layout: "no-auth",
@@ -63,6 +64,7 @@ import { errorMessages } from 'vue/compiler-sfc';
         })
         .then((response) => {
             if(response.data.value){
+                globalMessageStore.showSuccessMessage('Twoje konto zostało utworzone. Zalogowano do aplikacji.');
                 router.push({ path: '/' });
             }
         })
