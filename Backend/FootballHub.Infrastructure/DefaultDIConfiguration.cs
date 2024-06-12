@@ -13,6 +13,7 @@ public static class DefaultDIConfiguration
         services.AddSqlDatabase(configuration.GetConnectionString("MainDbSql")!);
         services.AddJwtAuth(configuration);
         services.AddPasswordManager();
+        services.AddHostedService<DatabaseInitializer>();
         
         return services;
     }

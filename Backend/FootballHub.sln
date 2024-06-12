@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootballHub.Infrastructure"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootballHub.Api", "FootballHub.Api\FootballHub.Api.csproj", "{DF0F94B0-8BB6-4E1A-B995-775E8652A1BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootballHub.Application.Tests", "FootballHub.Application.Tests\FootballHub.Application.Tests.csproj", "{AFA73D50-0966-45A7-A729-B6017A5E39D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{DF0F94B0-8BB6-4E1A-B995-775E8652A1BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF0F94B0-8BB6-4E1A-B995-775E8652A1BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF0F94B0-8BB6-4E1A-B995-775E8652A1BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFA73D50-0966-45A7-A729-B6017A5E39D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFA73D50-0966-45A7-A729-B6017A5E39D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFA73D50-0966-45A7-A729-B6017A5E39D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFA73D50-0966-45A7-A729-B6017A5E39D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

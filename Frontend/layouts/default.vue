@@ -9,7 +9,7 @@
     </v-app-bar>
 
     <v-navigation-drawer :order="mobile ? -1 : 0" v-model="drawer" v-if="userStore.$state.isLoggedIn === true">
-      <v-list-item lines="two">
+      <v-list-item lines="two" to="/my-account">
         <template v-slot:prepend>
           <v-avatar color="brand" v-if="userStore.$state.userData?.email">
               {{ userStore.$state.userData.email[0].toUpperCase() }}

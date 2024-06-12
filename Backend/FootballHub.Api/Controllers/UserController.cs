@@ -54,6 +54,13 @@ public class UserController : BaseController
         DeleteTokenCookie();        
         return Ok(logoutResult);
     }
+
+    [HttpPatch]
+    public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordCommand.Request model)
+    {
+        var changePasswordResult = await _mediator.Send(model);
+        return Ok(changePasswordResult);
+    }
     
     [HttpGet]
     public async Task<ActionResult> GetLoggedInUser()

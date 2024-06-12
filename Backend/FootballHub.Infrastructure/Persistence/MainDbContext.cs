@@ -13,6 +13,8 @@ public class MainDbContext: DbContext, IApplicationDbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Account> Accounts { get; set; }
     public DbSet<AccountUser> AccountUsers { get; set; }
+    public DbSet<Country> Countries { get; set; }
+    public DbSet<League> Leagues { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
