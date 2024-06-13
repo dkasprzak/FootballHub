@@ -18,4 +18,18 @@ public class LeagueController : BaseController
         var leagueResult = await _mediator.Send(model);
         return Ok(leagueResult);
     }
+
+    [HttpGet]
+    public async Task<ActionResult> GetLeagues()
+    {
+        var result = await _mediator.Send(new GetLeagueListQuery.Request());
+        return Ok(result);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult> GetLeagueDetails([FromRoute] int id)
+    {
+        var result = await _mediator.Send(new GetLeagueDetailQuery.Request { Id = id });
+        return Ok(result);
+    }
 }

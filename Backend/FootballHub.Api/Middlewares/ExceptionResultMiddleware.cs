@@ -36,6 +36,14 @@ public class ExceptionResultMiddleware
             httpContext.Response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
             await httpContext.Response.WriteAsJsonAsync(new ValidationResponse(ve));
         }
+        catch (NotFoundException ne)
+        {
+            httpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
+            await httpContext.Response.WriteAsJsonAsync(new NotFoundResponse
+            {
+                Message = ne.Message ?? "Not found"
+            });
+        }
         catch (Exception e)
         {
             logger.LogCritical(e, "Fatal error");
