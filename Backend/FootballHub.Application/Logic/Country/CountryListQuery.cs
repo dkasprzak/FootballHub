@@ -8,32 +8,40 @@ namespace FootballHub.Application.Logic.Country;
 
 public static class CountryListQuery
 {
-    public class Request : IRequest<List<Result>>;
+    public class Request : IRequest<Result>;
     
     public class Result
     {
-        public required int Id { get; set; }
-        public required string Name { get; set; }
-        public required string ShortName { get; set; }
+        public List<Country> Countries { get; set; } = new();
+        public record Country
+        {
+            public required int Id { get; set; }
+            public required string Name { get; set; }
+            public required string ShortName { get; set; }
+        }
     }
     
-    public class Handler : BaseQueryHandler, IRequestHandler<Request, List<Result>>
+    public class Handler : BaseQueryHandler, IRequestHandler<Request, Result>
     {
         public Handler(ICurrentAccountProvider currentAccountProvider, IApplicationDbContext applicationDbContext) : base(currentAccountProvider, applicationDbContext)
         {
         }
 
-        public async Task<List<Result>> Handle(Request request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(Request request, CancellationToken cancellationToken)
         {
-            var countries = await _applicationDbContext.Countries.ToListAsync();
-            var result = countries.Select(c => new Result
-            {
-                Id = c.Id,
-                Name = c.Name,
-                ShortName = c.ShortName
-            }).ToList();
+            var countries = await _applicationDbContext.Countries
+                .Select(x => new Result.Country
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    ShortName = x.ShortName
+                })
+                .ToListAsync();
 
-            return result;
+            return new Result
+            {
+                Countries = countries
+            };
         }
     }
     

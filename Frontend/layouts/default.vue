@@ -68,9 +68,9 @@
       url: '/'
     },
     {
-      name: 'Kluby',
+      name: 'Ligi piłkarskie',
       icon: 'mdi-soccer',
-      url: '/football-clubs'
+      url: '/leagues'
     }
   ];
 

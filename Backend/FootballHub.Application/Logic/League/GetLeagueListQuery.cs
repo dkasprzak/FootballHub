@@ -8,39 +8,45 @@ namespace FootballHub.Application.Logic.League;
 
 public static class GetLeagueListQuery
 {
-    public class Request : IRequest<List<Result>>;
+    public class Request : IRequest<Result>;
     
     public class Result
     {
-        public required int Id { get; set; }
-        public required string LeagueName { get; set; }
-        public required string CountryName { get; set; }
-        public required string CountryShortName { get; set; }
-        public DateTimeOffset CreateDate { get; set; }
+        public List<League> Leagues { get; set; } = new();
+        public record League
+        {
+            public required int Id { get; set; }
+            public required string LeagueName { get; set; }
+            public required string CountryName { get; set; }
+            public required string CountryShortName { get; set; }
+            public DateTimeOffset CreateDate { get; set; }   
+        }
     }
     
-    public class Handler : BaseQueryHandler, IRequestHandler<Request, List<Result>>
+    public class Handler : BaseQueryHandler, IRequestHandler<Request, Result>
     {
         public Handler(ICurrentAccountProvider currentAccountProvider, IApplicationDbContext applicationDbContext) : base(currentAccountProvider, applicationDbContext)
         {
         }
 
-        public async Task<List<Result>> Handle(Request request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(Request request, CancellationToken cancellationToken)
         {
             var leagues = await _applicationDbContext.Leagues
                 .Include(x => x.Country)
-                .ToListAsync();
+                .OrderByDescending(x => x.CreateDate)
+                .Select(x => new Result.League
+                {
+                    Id = x.Id,
+                    LeagueName = x.LeagueName,
+                    CountryName = x.Country.Name,
+                    CountryShortName = x.Country.ShortName,
+                    CreateDate = x.CreateDate
+                }).ToListAsync();
 
-            var result = leagues.Select(l => new Result
+            return new Result
             {
-                Id = l.Id,
-                LeagueName = l.LeagueName,
-                CountryName = l.Country.Name,
-                CountryShortName = l.Country.ShortName,
-                CreateDate = l.CreateDate,
-            }).ToList();
-
-            return result;
+                Leagues = leagues
+            };
         }
     }
     

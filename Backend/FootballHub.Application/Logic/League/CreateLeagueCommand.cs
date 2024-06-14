@@ -26,8 +26,6 @@ public static class CreateLeagueCommand
     public class Handler : BaseCommandHandler, IRequestHandler<Request, Result>
     {
         private readonly IFileConverter _fileConverter;
-        private readonly IPasswordManager _passwordManager;
-
         public Handler(ICurrentAccountProvider currentAccountProvider, IApplicationDbContext applicationDbContext, IFileConverter fileConverter) : base(currentAccountProvider, applicationDbContext)
         {
             _fileConverter = fileConverter;
