@@ -25,7 +25,7 @@
                     item-title="name" item-value="id" v-model="viewModel.countryId" variant="outlined" label="Kraj"></v-autocomplete>
                     
                     <v-file-input :rules="[ruleRequired]" variant="outlined" label="Wybierz zdjęcie" accept="image/*" 
-                    @change="onFileChange" v-model="viewModel.logo"></v-file-input>
+                    @change="onFileChange($event)" v-model="viewModel.logo"></v-file-input>
                 </VCardText>
             </div>
 
@@ -45,7 +45,6 @@
 </style>
 
 <script setup>
-
     const route  = useRoute();
     const router = useRouter();
     const { getErrorMessage } = useWebApiResponseParser();
@@ -57,7 +56,7 @@
     const loading = ref(false);
 
     const imageUrl = ref(null);
-    const fileData = ref(null);
+
     const isAdd = computed(() => {
         return route.params.id === 'add';
     });
@@ -75,19 +74,17 @@
         countryName: ''
     });
 
-    const onFileChange = (files) => {
-    const file = files[0];
-    if (file) {
-        console.log(fileName);
+    const onFileChange = (file) => {
+    const fileObject = file.target.files[0];
+    if (fileObject) {
         const reader = new FileReader();
         reader.onload = (e) => {
-            fileData.value = e.target.result;
-            imageUrl.value = URL.createObjectURL(file);
+            imageUrl.value = e.target.result;
         };
-         reader.readAsDataURL(file);
+        reader.readAsDataURL(fileObject);
+        viewModel.value.logo = fileObject;
     }
     };
-
     const loadData = () => {
         loading.value = true;
         let id = route.params.id
@@ -98,7 +95,7 @@
                 getModel.value = data.value;
                 viewModel.value.leagueName = getModel.value.leagueName;
                 viewModel.value.countryId=  countryStore.countriesData.find(country => country.name === getModel.value.countryName)?.id;
-                imageUrl.value = getModel.value.logo; 
+                imageUrl.value = getModel.value.logo;
             } else if(error.value){
                 globalMessageStore.showErrorMessage("Błąd pobierania danych");
             }
@@ -120,7 +117,6 @@
             body: formData,
             watch: false,
             onResponseError: ({ response }) => {
-                console.log(...viewModel.value)
                 let message = getErrorMessage(response, {});
                 globalMessageStore.showErrorMessage(message);
             }
@@ -146,7 +142,6 @@
             }
         }
     }
-
 
     onMounted(() => {
         if(!isAdd.value){
