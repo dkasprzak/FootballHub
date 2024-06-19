@@ -20,4 +20,8 @@
         <Using Include="Xunit"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\FootballHub.Application\FootballHub.Application.csproj" />
+    </ItemGroup>
+
 </Project>

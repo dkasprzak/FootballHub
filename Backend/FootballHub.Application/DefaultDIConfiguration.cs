@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FootballHub.Application.Helpers;
 using FootballHub.Application.Interfaces;
 using FootballHub.Application.Logic.Abstractions;
 using FootballHub.Application.Services;
@@ -13,7 +14,6 @@ public static class DefaultDIConfiguration
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddScoped<ICurrentAccountProvider, CurrentAccountProvider>();
-        services.AddScoped<IFileConverter, FileConverter>();
         
         return services;
     }

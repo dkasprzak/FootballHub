@@ -1,11 +1,12 @@
 ﻿using FluentValidation;
 using FootballHub.Application.Exceptions;
+using FootballHub.Application.Helpers;
 using FootballHub.Application.Interfaces;
 using FootballHub.Application.Logic.Abstractions;
-using FootballHub.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using FootballHub.Application.Helpers;
 
 namespace FootballHub.Application.Logic.League;
 
@@ -25,10 +26,8 @@ public static class CreateLeagueCommand
 
     public class Handler : BaseCommandHandler, IRequestHandler<Request, Result>
     {
-        private readonly IFileConverter _fileConverter;
-        public Handler(ICurrentAccountProvider currentAccountProvider, IApplicationDbContext applicationDbContext, IFileConverter fileConverter) : base(currentAccountProvider, applicationDbContext)
+        public Handler(ICurrentAccountProvider currentAccountProvider, IApplicationDbContext applicationDbContext) : base(currentAccountProvider, applicationDbContext)
         {
-            _fileConverter = fileConverter;
         }
 
         public async Task<Result> Handle(Request request, CancellationToken cancellationToken)
@@ -46,14 +45,14 @@ public static class CreateLeagueCommand
             }
 
             var utcNow = DateTime.UtcNow;
-            var file = _fileConverter.ReadFile(request.Logo);
+            var logo = request.Logo;
+            var logoFileName = $"{NameConverter.FormatFileNameToSnakeCase(request.LeagueName)}{Path.GetExtension(logo.FileName)}";
+            
             var league = new Domain.Entities.League
             {
                 LeagueName = request.LeagueName,
-                FileName = file.FileName,
-                FileType = Path.GetExtension(file.FileName),
-                ContentType = file.ContentType,
-                Data = _fileConverter.ConvertToByteArray(file),
+                Logo = FileConverter.ConvertFileToBase64String(logo),
+                LogoFileName = logoFileName,
                 CreateDate = utcNow,
                 CountryId = request.CountryId,
             };

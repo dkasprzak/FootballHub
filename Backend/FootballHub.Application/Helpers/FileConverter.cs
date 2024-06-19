@@ -1,20 +1,19 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace FootballHub.Application.Services;
+namespace FootballHub.Application.Helpers;
 
 public static class FileConverter
 {
-    public static IFormFile ReadFile(IFormFile file)
+    public static string ConvertFileToBase64String(IFormFile file)
     {
         using var memoryStream = new MemoryStream();
         file.CopyTo(memoryStream);
-        return file;
-    }
-
-    public static byte[] ConvertToByteArray(IFormFile file)
-    {
-        using var memoryStream = new MemoryStream();
-        file.CopyTo(memoryStream);
-        return memoryStream.ToArray();    
+        
+        var fileData = memoryStream.ToArray();
+        var fileContentType = file.ContentType;
+        var fileDataString = Convert.ToBase64String(fileData);
+        
+        var base64 = $"data:{fileContentType};base64,{fileDataString}";
+        return base64;
     }
 }

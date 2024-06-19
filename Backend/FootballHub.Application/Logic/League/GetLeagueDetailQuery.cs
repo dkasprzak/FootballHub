@@ -20,6 +20,8 @@ public static class GetLeagueDetailQuery
         public required string LeagueName { get; set; }
         public required string CountryName { get; set; }
         public required string CountryShortName { get; set; }
+        public required string Logo { get; set; }
+        public required string LogoFileName { get; set; }
         public DateTimeOffset CreateDate { get; set; }
     }
     
@@ -38,13 +40,15 @@ public static class GetLeagueDetailQuery
             {
                 throw new NotFoundException();
             }
-
+            
             return new Result()
             {
                 Id = league.Id,
                 LeagueName = league.LeagueName,
                 CountryName = league.Country.Name,
                 CountryShortName = league.Country.ShortName,
+                Logo = league.Logo,
+                LogoFileName = league.LogoFileName,
                 CreateDate = league.CreateDate
             };
         }
