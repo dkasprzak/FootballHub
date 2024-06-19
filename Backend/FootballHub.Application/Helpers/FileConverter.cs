@@ -1,18 +1,17 @@
-﻿using FootballHub.Application.Interfaces;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace FootballHub.Application.Services;
 
-public class FileConverter : IFileConverter
+public static class FileConverter
 {
-    public IFormFile ReadFile(IFormFile file)
+    public static IFormFile ReadFile(IFormFile file)
     {
         using var memoryStream = new MemoryStream();
         file.CopyTo(memoryStream);
         return file;
     }
 
-    public byte[] ConvertToByteArray(IFormFile file)
+    public static byte[] ConvertToByteArray(IFormFile file)
     {
         using var memoryStream = new MemoryStream();
         file.CopyTo(memoryStream);
