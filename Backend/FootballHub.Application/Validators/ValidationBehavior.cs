@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using MediatR;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace FootballHub.Application.Validators;
 

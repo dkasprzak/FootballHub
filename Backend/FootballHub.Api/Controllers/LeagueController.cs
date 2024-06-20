@@ -13,7 +13,7 @@ public class LeagueController : BaseController
     }
 
     [HttpPost]
-    public async Task<ActionResult> CreateLeague([FromForm] CreateLeagueCommand.Request model)
+    public async Task<ActionResult> CreateOrUpdateLeague([FromForm] CreateOrUpdateLeagueCommand.Request model)
     {
         var leagueResult = await _mediator.Send(model);
         return Ok(leagueResult);
