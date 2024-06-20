@@ -51,6 +51,7 @@
     const globalMessageStore = useGlobalMessageStore();
     const countryStore = useCountryStore();
     const { ruleRequired, ruleMaxLen } = useFormValidationRules();
+    const { base64ToFile } = useFileConverter();
 
     const saving = ref(false);
     const loading = ref(false);
@@ -87,7 +88,7 @@
     };
     const loadData = () => {
         loading.value = true;
-        let id = route.params.id
+        let id = route.params.id;
 
         useWebApiFetch(`/League/GetLeagueDetails/${id}`)
         .then(({data, error}) => {
@@ -96,6 +97,7 @@
                 viewModel.value.leagueName = getModel.value.leagueName;
                 viewModel.value.countryId=  countryStore.countriesData.find(country => country.name === getModel.value.countryName)?.id;
                 imageUrl.value = getModel.value.logo;
+                viewModel.value.logo = base64ToFile(getModel.value.logo, getModel.value.logoFileName);
             } else if(error.value){
                 globalMessageStore.showErrorMessage("Błąd pobierania danych");
             }
@@ -104,15 +106,18 @@
         });
     };
 
-    const create = () => {
+    const createOrUpdate = () => {
         saving.value = true;
 
         const formData = new FormData();
+        if (!isAdd.value) {
+            formData.append('id', route.params.id);
+        }
         formData.append('leagueName', viewModel.value.leagueName);
         formData.append('countryId', viewModel.value.countryId);
         formData.append('logo', viewModel.value.logo);
 
-        useWebApiFetch('/League/CreateLeague', {
+        useWebApiFetch('/League/CreateOrUpdateLeague', {
             method: 'POST',
             body: formData,
             watch: false,
@@ -135,11 +140,7 @@
     const submit = async (ev) => {
         const { valid } = await ev;
         if(valid){
-            if(isAdd.value){
-                create();
-            } else{
-                // edit();
-            }
+            createOrUpdate();
         }
     }
 
