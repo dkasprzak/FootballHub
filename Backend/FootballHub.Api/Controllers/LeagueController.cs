@@ -15,10 +15,17 @@ public class LeagueController : BaseController
     [HttpPost]
     public async Task<ActionResult> CreateOrUpdateLeague([FromForm] CreateOrUpdateLeagueCommand.Request model)
     {
-        var leagueResult = await _mediator.Send(model);
-        return Ok(leagueResult);
+        var result = await _mediator.Send(model);
+        return Ok(result);
     }
 
+    [HttpPost]
+    public async Task<ActionResult> DeleteLeague([FromBody] DeleteLeagueCommand.Request model)
+    {
+        var result = await _mediator.Send(model);
+        return Ok(result);
+    }
+    
     [HttpGet]
     public async Task<ActionResult> GetLeagues()
     {

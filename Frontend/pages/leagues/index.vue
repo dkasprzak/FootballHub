@@ -21,22 +21,27 @@
 
             <template v-slot:item.action="{ item }">
                 <div class="text-no-wrap">
-                    <VBtn icon="mdi-delete" tile="Usuń" variant="flat"></VBtn>
+                    <VBtn icon="mdi-delete" tile="Usuń" variant="flat" :loading="item.deleting" @click="deleteLeague(item)"></VBtn>
                     <VBtn icon="mdi-pencil" title="Edytuj" variant="flat" :to="`/leagues/${item.id}`"></VBtn>
                 </div>
             </template>
 
         </v-data-table>
+        <ConfirmDialog ref="confirmDialog"/>
     </VCard>
 </template>
 
 <script setup>
+    const { getErrorMessage } = useWebApiResponseParser();
+    const globalMessageStore = useGlobalMessageStore();
     const dayjs = useDayjs();
     const loading = ref(false);
     const items = ref([]);
-    
+
+    const confirmDialog = ref(null);
+
+
     const headers = ref([
-       //{ title: 'Id', value: 'id' },
        { title: 'Nazwa', value: 'leagueName' },
        { title: 'Kraj', value: 'countryName' },
        { title: 'Kraj skrót', value: 'countryShortName' },
@@ -59,6 +64,40 @@
             loading.value = false;
         });
     };
+
+    const deleteLeague = (item) => {
+        confirmDialog.value.show({
+            title: 'Potwierdzenie usunięcia',
+            text: 'Czy na pewno chcesz usunąć ligę?',
+            confirmBtnText: 'Usuń',
+            confirmBtnColor: 'error'
+        }).then((confirm) => {
+            if(confirm){
+                item.deleting = true;
+                useWebApiFetch('/League/DeleteLeague', {
+                    method: 'POST',
+                    body: { id: item.id },
+                    watch: false,
+                    onResponseError: ({ response }) => {
+                        let message = getErrorMessage(response, {});
+                        globalMessageStore.showErrorMessage(message);
+                    } 
+                })
+                .then((response) => {
+                    if(response.data.value){
+                        globalMessageStore.showSuccessMessage('Liga została usunięta.');
+                        let indexToDel = items.value.findIndex(i => i.id === item.id);
+                        if(indexToDel > -1){
+                            items.value.splice(indexToDel, 1);
+                        }
+                    }
+                })
+                .finally(() => {
+                    item.deleting = false;
+                });
+            }
+        })
+    }
 
     onMounted(() => {
         loadData();
