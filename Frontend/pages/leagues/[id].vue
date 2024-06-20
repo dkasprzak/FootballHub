@@ -14,7 +14,10 @@
         <VForm v-else @submit.prevent="submit" :disabled="saving">
             <div class="league-profile">
                 <VCardText class="d-flex justify-center align-center">
-                    <v-avatar size="150">
+                    <v-avatar v-if="imageUrl === null" size="150">
+                        <v-icon icon="mdi-image" size="80"></v-icon>
+                    </v-avatar>
+                    <v-avatar v-else size="150">
                         <v-img :src="imageUrl" alt="Logo"></v-img>
                     </v-avatar>
                 </VCardText>
